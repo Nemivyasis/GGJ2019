@@ -16,7 +16,7 @@ public class DoggoScript : MonoBehaviour {
 
     public float updateTime = .5f;
     float sinceLastUpdate;
-    public bool running = true;
+    public bool running;
     private bool onTreat;
 
     public Sprite doggoRight;
@@ -27,9 +27,13 @@ public class DoggoScript : MonoBehaviour {
     public direction startingForward = direction.right;
     direction forward;
 
+    Animator anim;
+
 	// Use this for initialization
 	void Start () {
         sinceLastUpdate = 0;
+        anim = gameObject.GetComponent<Animator>();
+        SetAnimation();
 	}
 	
 	// Update is called once per frame
@@ -54,6 +58,10 @@ public class DoggoScript : MonoBehaviour {
         }
 	}
 
+    private void SetAnimation()
+    {
+        anim.SetInteger("direction", (int) forward);
+    }
     private GameObject GetObjectAtLocation(Vector3 location)
     {
         Collider[] colliders = Physics.OverlapSphere(location, 0.2f);
@@ -155,23 +163,7 @@ public class DoggoScript : MonoBehaviour {
 
     public void UpdateDirection()
     {
-        SpriteRenderer sr = (SpriteRenderer)gameObject.GetComponent<SpriteRenderer>();
-        switch (forward)
-        {
-
-            case direction.right:
-                sr.sprite = doggoRight;
-                break;
-            case direction.left:
-                sr.sprite = doggoLeft;
-                break;
-            case direction.down:
-                sr.sprite = doggoDown;
-                break;
-            default:
-                sr.sprite = doggoUp;
-                break;
-        }
+        SetAnimation();
     }
 
     private Vector3 GetDirection(direction d)

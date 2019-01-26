@@ -16,7 +16,7 @@ public class DoggoScript : MonoBehaviour {
 
     public float updateTime = .5f;
     float sinceLastUpdate;
-    public bool running = true;
+    public bool running;
     private bool onTreat;
 
     public Sprite doggoRight;

@@ -15,6 +15,14 @@ public class DoggoScript : MonoBehaviour {
 
     public float updateTime = .5f;
     float sinceLastUpdate;
+    public bool running = true;
+    private bool onTreat;
+    public Vector3 original;
+
+    public Sprite doggoRight;
+    public Sprite doggoLeft;
+    public Sprite doggoDown;
+    public Sprite doggoUp;
 
     public direction startingForward = direction.right;
     direction forward;
@@ -26,22 +34,34 @@ public class DoggoScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        sinceLastUpdate += Time.deltaTime;
-
-        if(sinceLastUpdate >= updateTime)
+        if (running)
         {
-            sinceLastUpdate = 0;
+            sinceLastUpdate += Time.deltaTime;
 
-            Act();
+            if (sinceLastUpdate >= updateTime)
+            {
+                sinceLastUpdate = 0;
+
+                Act();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown("s"))
+            {
+                running = true;
+            }
         }
 	}
 
-    private int GetWallAtLocation(Vector3 location)
+    private int GetObjectAtLocation(Vector3 location)
     {
         Collider[] colliders = Physics.OverlapSphere(location, 0.2f);
         if (colliders.Length == 0) return 0;
         GameObject found = colliders[0].gameObject;
         if (found.tag.Equals("Rock")) return 1;
+        if (found.tag.Equals("Treat")) return 2;
+        if (found.tag.Equals("Pit")) return 3;
         return 0;
 
     }
@@ -49,14 +69,81 @@ public class DoggoScript : MonoBehaviour {
     private void Act()
     {
         Vector3 forwardLoc = transform.position + GetDirection(forward);
-        int whatsAhead = GetWallAtLocation(forwardLoc);
+        if(onTreat) forwardLoc += GetDirection(forward);
+        int whatsAhead = GetObjectAtLocation(forwardLoc);
         if (whatsAhead == 0) Move();
-        else if (whatsAhead == 1) forward = TurnRight(forward);
+        else if (whatsAhead == 1)
+        {
+            forward = TurnRight(forward);
+            UpdateDirection();
+        }
+        else if (whatsAhead == 2)
+        {
+            Move();
+            onTreat = true;
+        }
+        else if (whatsAhead == 3)
+        {
+            ResetAll();
+            running = false;
+        }
     }
 
     private void Move()
     {
-        transform.Translate(GetDirection(forward));
+        if (onTreat)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
+            if (colliders.Length != 0)
+            {
+                GameObject treat = colliders[0].gameObject;
+                treat.GetComponent<TreatScript>().GetEaten();
+            }
+            transform.Translate(GetDirection(forward) * 2);
+            onTreat = false;
+        }
+        else
+        {
+            transform.Translate(GetDirection(forward));
+        }
+    }
+
+    public void Reset()
+    {
+        transform.SetPositionAndRotation(original, new Quaternion(0f, 0f, 0f, 0f));
+        forward = startingForward;
+        UpdateDirection();
+    }
+
+    public void ResetAll()
+    {
+        GameObject[] treats = GameObject.FindGameObjectsWithTag("Treat");
+        foreach(GameObject t in treats)
+        {
+            t.GetComponent<TreatScript>().Reset();
+        }
+        Reset();
+    }
+
+    public void UpdateDirection()
+    {
+        SpriteRenderer sr = (SpriteRenderer)gameObject.GetComponent<SpriteRenderer>();
+        switch (forward)
+        {
+
+            case direction.right:
+                sr.sprite = doggoRight;
+                break;
+            case direction.left:
+                sr.sprite = doggoLeft;
+                break;
+            case direction.down:
+                sr.sprite = doggoDown;
+                break;
+            default:
+                sr.sprite = doggoUp;
+                break;
+        }
     }
 
     private Vector3 GetDirection(direction d)

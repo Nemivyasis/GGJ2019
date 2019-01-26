@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212845311676101446}
   - component: {fileID: 65885667878165262}
   - component: {fileID: 114552265985621790}
+  - component: {fileID: 114819800326281866}
   m_Layer: 0
   m_Name: Pit
   m_TagString: Pit
@@ -63,6 +64,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b3d54403df493e409682980236db8db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114819800326281866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1457699766585656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a0a28bc1895e4e912a49fb5f867d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212845311676101446

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212680978143064004}
   - component: {fileID: 114611521343103950}
   - component: {fileID: 114587981911330472}
+  - component: {fileID: 114579605123871326}
   m_Layer: 0
   m_Name: Doggo
   m_TagString: Dog
@@ -42,6 +43,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114579605123871326
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1403050714394412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a0a28bc1895e4e912a49fb5f867d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114587981911330472
 MonoBehaviour:
   m_ObjectHideFlags: 1

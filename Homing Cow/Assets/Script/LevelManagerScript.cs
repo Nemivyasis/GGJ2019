@@ -25,76 +25,129 @@ public class LevelManagerScript : MonoBehaviour {
 
     List<GameObject> placedObjects = new List<GameObject>();
 
+    GameObject doggo;
+    DoggoScript doggoScript;
+
     private void Start()
     {
         treeCount = maxTrees;
         treatCount = maxTreats;
         boulderCount = maxBoulders;
         render = gameObject.GetComponent<SpriteRenderer>();
+        doggo = GameObject.FindGameObjectWithTag("Dog");
+        doggoScript = doggo.GetComponent<DoggoScript>();
     }
 
     void Update()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (currentSelected > 0)
+        if (!doggoScript.running)
         {
-            if(mousePos.x >= 7.5 && render.enabled)
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (currentSelected > 0)
             {
+                if (mousePos.x >= 7.5 && render.enabled)
+                {
+                    render.enabled = false;
+                }
+                if (mousePos.x < 7.5 && !render.enabled && currentSelected > 0)
+                {
+                    render.enabled = true;
+                }
+                transform.position = new Vector3(Mathf.Floor(mousePos.x + .5f), Mathf.Floor(mousePos.y + .5f), -5);
+            }
+
+            if (Input.GetKeyDown("1"))
+            {
+                currentSelected = 1;
+                render.enabled = true;
+                render.sprite = treeSprite;
+            }
+            if (Input.GetKeyDown("2"))
+            {
+                currentSelected = 2;
+                render.enabled = true;
+                render.sprite = treatSprite;
+            }
+            if (Input.GetKeyDown("3"))
+            {
+                currentSelected = 3;
+                render.enabled = true;
+                render.sprite = boulderSprite;
+            }
+            if (Input.GetKeyDown("`"))
+            {
+                currentSelected = -1;
                 render.enabled = false;
             }
-            if(mousePos.x < 7.5 && !render.enabled && currentSelected > 0)
-            {
-                render.enabled = true;
-            }
-            transform.position = new Vector3(Mathf.Floor(mousePos.x + .5f), Mathf.Floor(mousePos.y + .5f), -5);
-        }
 
-        if (Input.GetKeyDown("1"))
-        {
-            currentSelected = 1;
-            render.enabled = true;
-            render.sprite = treeSprite;
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            currentSelected = 2;
-            render.enabled = true;
-            render.sprite = treatSprite;
-        }
-        if (Input.GetKeyDown("3"))
-        {
-            currentSelected = 3;
-            render.enabled = true;
-            render.sprite = boulderSprite;
-        }
-        if (Input.GetKeyDown("`"))
-        {
-            currentSelected = -1;
-            render.enabled = false;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (mousePos.x >= 7.5)
+            if (Input.GetMouseButtonDown(0))
             {
-
-            }
-            else
-            {
-                if (currentSelected == -1)
+                if (mousePos.x >= 7.5)
                 {
-                    DeleteElement(mousePos);
+                    if (mousePos.y < -9.5)
+                    {
+                        doggoScript.running = true;
+                        currentSelected = 0;
+                        render.enabled = false;
+                    }
+                    else if (mousePos.y < -6.5)
+                    {
+                        DeleteAll();
+                    }
+                    else if (mousePos.y < -5.5)
+                    {
+
+                    }
+                    else if (mousePos.y < -3.5)
+                    {
+                        currentSelected = -1;
+                        render.enabled = false;
+                    }
+                    else if (mousePos.y < -2.5)
+                    {
+
+                    }
+                    else if (mousePos.y < -0.5)
+                    {
+                        currentSelected = 3;
+                        render.sprite = boulderSprite;
+                    }
+                    else if (mousePos.y < 1.5)
+                    {
+                        currentSelected = 2;
+                        render.sprite = treatSprite;
+                    }
+                    else if (mousePos.y < 3.5)
+                    {
+                        currentSelected = 1;
+                        render.sprite = treeSprite;
+                    }
                 }
-                else if (currentSelected > 0)
+                else
                 {
-                    PlaceElement(mousePos);
+                    if (currentSelected == -1)
+                    {
+                        DeleteElement(mousePos);
+                    }
+                    else if (currentSelected > 0)
+                    {
+                        PlaceElement(mousePos);
+                    }
                 }
             }
-        }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            DeleteElement(mousePos);
+            if (Input.GetMouseButtonDown(1))
+            {
+                DeleteElement(mousePos);
+            }
+
+            if (Input.GetKeyDown("s"))
+            {
+                doggoScript.running = true;
+                currentSelected = 0;
+                render.enabled = false;
+            }
+
         }
     }
 

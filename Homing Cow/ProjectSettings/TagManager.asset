@@ -7,6 +7,9 @@ TagManager:
   - Level
   - Dog
   - Rock
+  - Treat
+  - Pit
+  - Boulder
   layers:
   - Default
   - TransparentFX

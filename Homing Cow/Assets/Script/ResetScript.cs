@@ -6,7 +6,7 @@ public class ResetScript : MonoBehaviour {
 
     Vector3 original;
 
-    public void Start()
+    void Start()
     {
         original = transform.position;
     }

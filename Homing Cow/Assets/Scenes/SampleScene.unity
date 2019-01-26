@@ -2558,8 +2558,12 @@ Prefab:
         type: 2}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f2419510de7889f479f6de9cd3135b7c,
+      objectReference: {fileID: 21300000, guid: 608d3f24cad5ef140a6770cea298e6e3,
         type: 3}
+    - target: {fileID: 1403050714394412, guid: dbe8e4e1a330eb14c95034152676752b, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbe8e4e1a330eb14c95034152676752b, type: 2}
   m_IsPrefabAsset: 0
@@ -18591,7 +18595,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: f80fce3182c63174cb17a04e65fa2f6c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1

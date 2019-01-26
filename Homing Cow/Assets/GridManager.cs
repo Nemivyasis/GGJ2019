@@ -5,8 +5,8 @@ using UnityEngine;
 public class GridManager : MonoBehaviour {
 
     bool[,] open;
-    public int maxX=10;
-    public int maxY = 10;
+    public int gridWidth = 10;
+    public int gridHeight = 10;
     public Vector2 leftCorner = new Vector2(5.5f, -5.5f);
 	// Use this for initialization
 	void Start () {

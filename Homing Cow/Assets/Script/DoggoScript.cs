@@ -17,7 +17,6 @@ public class DoggoScript : MonoBehaviour {
     float sinceLastUpdate;
     public bool running = true;
     private bool onTreat;
-    public Vector3 original;
 
     public Sprite doggoRight;
     public Sprite doggoLeft;
@@ -54,15 +53,11 @@ public class DoggoScript : MonoBehaviour {
         }
 	}
 
-    private int GetObjectAtLocation(Vector3 location)
+    private GameObject GetObjectAtLocation(Vector3 location)
     {
         Collider[] colliders = Physics.OverlapSphere(location, 0.2f);
-        if (colliders.Length == 0) return 0;
-        GameObject found = colliders[0].gameObject;
-        if (found.tag.Equals("Rock")) return 1;
-        if (found.tag.Equals("Treat")) return 2;
-        if (found.tag.Equals("Pit")) return 3;
-        return 0;
+        if (colliders.Length == 0) return null;
+        return colliders[0].gameObject;
 
     }
 
@@ -70,22 +65,36 @@ public class DoggoScript : MonoBehaviour {
     {
         Vector3 forwardLoc = transform.position + GetDirection(forward);
         if(onTreat) forwardLoc += GetDirection(forward);
-        int whatsAhead = GetObjectAtLocation(forwardLoc);
-        if (whatsAhead == 0) Move();
-        else if (whatsAhead == 1)
+        GameObject whatsAhead = GetObjectAtLocation(forwardLoc);
+        if (whatsAhead == null) Move();
+        else if (whatsAhead.tag.Equals("Rock"))
         {
             forward = TurnRight(forward);
             UpdateDirection();
         }
-        else if (whatsAhead == 2)
+        else if (whatsAhead.tag.Equals("Treat"))
         {
             Move();
             onTreat = true;
         }
-        else if (whatsAhead == 3)
+        else if (whatsAhead.tag.Equals("Pit"))
         {
             ResetAll();
             running = false;
+        }
+        else if (whatsAhead.tag.Equals("Boulder"))
+        {
+            BoulderScript bs = whatsAhead.GetComponent<BoulderScript>();
+            if (bs.CanPush(GetDirection(forward)))
+            {
+                bs.Push(GetDirection(forward));
+                Move();
+            }
+            else
+            {
+                forward = TurnRight(forward);
+                UpdateDirection();
+            }
         }
     }
 
@@ -108,21 +117,19 @@ public class DoggoScript : MonoBehaviour {
         }
     }
 
-    public void Reset()
-    {
-        transform.SetPositionAndRotation(original, new Quaternion(0f, 0f, 0f, 0f));
-        forward = startingForward;
-        UpdateDirection();
-    }
-
     public void ResetAll()
     {
-        GameObject[] treats = GameObject.FindGameObjectsWithTag("Treat");
-        foreach(GameObject t in treats)
+        GameObject[] objects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        foreach(GameObject o in objects)
         {
-            t.GetComponent<TreatScript>().Reset();
+            if (o.activeInHierarchy)
+            {
+                ResetScript rs = o.GetComponent<ResetScript>();
+                if (rs != null) rs.Reset();
+            }
         }
-        Reset();
+        forward = startingForward;
+        UpdateDirection();
     }
 
     public void UpdateDirection()

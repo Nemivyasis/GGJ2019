@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DoggoScript : MonoBehaviour {
 
@@ -67,15 +68,21 @@ public class DoggoScript : MonoBehaviour {
         if(onTreat) forwardLoc += GetDirection(forward);
         GameObject whatsAhead = GetObjectAtLocation(forwardLoc);
         if (whatsAhead == null) Move();
-        else if (whatsAhead.tag.Equals("Rock"))
+        else if (whatsAhead.tag.Equals("Tree"))
         {
-            forward = TurnRight(forward);
-            UpdateDirection();
+            TurnRight();
         }
         else if (whatsAhead.tag.Equals("Treat"))
         {
             Move();
             onTreat = true;
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
+            if (colliders.Length != 0)
+            {
+                GameObject treat = colliders[0].gameObject;
+                treat.GetComponent<TreatScript>().GetEaten();
+            }
+
         }
         else if (whatsAhead.tag.Equals("Pit"))
         {
@@ -92,9 +99,26 @@ public class DoggoScript : MonoBehaviour {
             }
             else
             {
-                forward = TurnRight(forward);
-                UpdateDirection();
+                TurnRight();
             }
+        }
+
+        else if (whatsAhead.tag.Equals("Goal"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+
+    private void TurnRight()
+    {
+        if (onTreat)
+        {
+            ResetAll();
+        }
+        else
+        {
+            forward = RightTurn(forward);
+            UpdateDirection();
         }
     }
 
@@ -102,12 +126,7 @@ public class DoggoScript : MonoBehaviour {
     {
         if (onTreat)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
-            if (colliders.Length != 0)
-            {
-                GameObject treat = colliders[0].gameObject;
-                treat.GetComponent<TreatScript>().GetEaten();
-            }
+            
             transform.Translate(GetDirection(forward) * 2);
             onTreat = false;
         }
@@ -130,6 +149,8 @@ public class DoggoScript : MonoBehaviour {
         }
         forward = startingForward;
         UpdateDirection();
+        onTreat = false;
+        running = false;
     }
 
     public void UpdateDirection()
@@ -168,7 +189,7 @@ public class DoggoScript : MonoBehaviour {
         }
     }
 
-    private direction TurnRight(direction current)
+    private direction RightTurn(direction current)
     {
         switch(current)
         {
@@ -183,7 +204,7 @@ public class DoggoScript : MonoBehaviour {
         }
     }
 
-    private direction TurnLeft(direction current)
+    private direction LeftTurn(direction current)
     {
         switch (current)
         {
@@ -198,7 +219,7 @@ public class DoggoScript : MonoBehaviour {
         }
     }
 
-    private direction TurnAround(direction current)
+    private direction AboutTurn(direction current)
     {
         switch (current)
         {

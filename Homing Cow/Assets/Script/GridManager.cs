@@ -7,7 +7,7 @@ public class GridManager : MonoBehaviour {
     public enum levelObjects
     {
         dog,
-        rock
+        tree
     }
     levelObjects[,] grid;
     public int gridWidth = 10;
@@ -36,8 +36,8 @@ public class GridManager : MonoBehaviour {
                 case "Dog":
                     grid[(int)pos.x, (int)pos.y] = levelObjects.dog;
                     break;
-               case "Rock":
-                    grid[(int)pos.x, (int)pos.y] = levelObjects.rock;
+               case "Tree":
+                    grid[(int)pos.x, (int)pos.y] = levelObjects.tree;
                     break;
                 default:
                     break;

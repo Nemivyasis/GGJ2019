@@ -5,24 +5,19 @@ using UnityEngine;
 
 public class DoggoScript : MonoBehaviour {
 
-    public enum directions
+    public enum direction
     {
         right,
         left,
         down,
         up
     }
-    public enum AI
-    {
-        forwardRight
-    }
 
     public float updateTime = .5f;
     float sinceLastUpdate;
 
-    AI aiChoice;
-    public directions startingForward = directions.right;
-    directions forward;
+    public direction startingForward = direction.right;
+    direction forward;
 
 	// Use this for initialization
 	void Start () {
@@ -37,35 +32,90 @@ public class DoggoScript : MonoBehaviour {
         {
             sinceLastUpdate = 0;
 
-            switch (aiChoice)
-            {
-                case AI.forwardRight:
-                    ForwardRight();
-                    break;
-                default:
-                    break;
-            }
+            Act();
         }
 	}
 
-    private void ForwardRight()
+    private int GetWallAtLocation(Vector3 location)
     {
-        switch (forward)
+        Collider[] colliders = Physics.OverlapSphere(location, 0.2f);
+        if (colliders.Length == 0) return 0;
+        GameObject found = colliders[0].gameObject;
+        if (found.tag.Equals("Rock")) return 1;
+        return 0;
+
+    }
+
+    private void Act()
+    {
+        Vector3 forwardLoc = transform.position + GetDirection(forward);
+        int whatsAhead = GetWallAtLocation(forwardLoc);
+        if (whatsAhead == 0) Move();
+        else if (whatsAhead == 1) forward = TurnRight(forward);
+    }
+
+    private void Move()
+    {
+        transform.Translate(GetDirection(forward));
+    }
+
+    private Vector3 GetDirection(direction d)
+    {
+        switch (d)
         {
-            case directions.right:
-                transform.Translate(new Vector3(1, 0, 0));
-                break;
-            case directions.left:
-                transform.Translate(new Vector3(-1, 0, 0));
-                break;
-            case directions.down:
-                transform.Translate(new Vector3(0, -1, 0));
-                break;
-            case directions.up:
-                transform.Translate(new Vector3(0, 1, 0));
-                break;
+            case direction.right:
+                return new Vector3(1, 0, 0);
+            case direction.left:
+                return new Vector3(-1, 0, 0);
+            case direction.down:
+                return new Vector3(0, -1, 0);
             default:
-                break;
+                return new Vector3(0, 1, 0);
+        }
+    }
+
+    private direction TurnRight(direction current)
+    {
+        switch(current)
+        {
+            case direction.right:
+                return direction.down;
+            case direction.left:
+                return direction.up;
+            case direction.down:
+                return direction.left;
+            default:
+                return direction.right;
+        }
+    }
+
+    private direction TurnLeft(direction current)
+    {
+        switch (current)
+        {
+            case direction.right:
+                return direction.up;
+            case direction.left:
+                return direction.down;
+            case direction.down:
+                return direction.right;
+            default:
+                return direction.left;
+        }
+    }
+
+    private direction TurnAround(direction current)
+    {
+        switch (current)
+        {
+            case direction.right:
+                return direction.left;
+            case direction.left:
+                return direction.right;
+            case direction.down:
+                return direction.up;
+            default:
+                return direction.down;
         }
     }
 }

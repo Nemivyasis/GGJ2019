@@ -88,6 +88,7 @@ public class LevelManagerScript : MonoBehaviour {
                     if (mousePos.y < -9.5)
                     {
                         doggoScript.running = true;
+                        doggoScript.sidebar.setPlay();
                         currentSelected = 0;
                         render.enabled = false;
                     }
@@ -145,6 +146,7 @@ public class LevelManagerScript : MonoBehaviour {
             if (Input.GetKeyDown("s"))
             {
                 doggoScript.running = true;
+                doggoScript.sidebar.setPlay();
                 currentSelected = 0;
                 render.enabled = false;
             }

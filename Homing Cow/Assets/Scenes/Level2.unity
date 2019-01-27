@@ -18064,7 +18064,7 @@ GameObject:
   - component: {fileID: 1696961209}
   m_Layer: 0
   m_Name: border
-  m_TagString: Untagged
+  m_TagString: Sidebar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18139,6 +18139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13644ad2cdbfc1459e65766bbd51938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  play: {fileID: 21300000, guid: b26c1f2fdf119ab4e9cba8d103a319f3, type: 3}
+  pause: {fileID: 21300000, guid: e598e9255809e9a4dae2d5e20376817c, type: 3}
 --- !u!1001 &1697641522
 Prefab:
   m_ObjectHideFlags: 0

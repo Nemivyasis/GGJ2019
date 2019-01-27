@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class SidebarScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    SpriteRenderer render;
+    public Sprite play;
+    public Sprite pause;
+
+    void Start()
+    {
+        render = gameObject.GetComponent<SpriteRenderer>();
+    }
+
+    public void setPlay(){
+        render.sprite = play;
+    }
+
+    public void setPause(){
+        render.sprite = pause;
+    }
 }

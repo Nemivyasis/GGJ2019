@@ -30,11 +30,14 @@ public class DoggoScript : MonoBehaviour {
 
     Animator anim;
 
+    public SidebarScript sidebar;
+
 	// Use this for initialization
 	void Start () {
         sinceLastUpdate = 0;
         anim = gameObject.GetComponent<Animator>();
         SetAnimation();
+        sidebar = GameObject.FindGameObjectWithTag("Sidebar").GetComponent<SidebarScript>();
 	}
 	
 	// Update is called once per frame
@@ -175,6 +178,7 @@ public class DoggoScript : MonoBehaviour {
         UpdateDirection();
         onTreat = false;
         running = false;
+        sidebar.setPause();
     }
 
     public void UpdateDirection()

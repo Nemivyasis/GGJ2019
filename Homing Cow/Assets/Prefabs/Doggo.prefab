@@ -96,13 +96,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 893eb8cdb6e376f418c5ddf5f88f1c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateTime: 0.51
+  updateTime: 0.21
   running: 0
   doggoRight: {fileID: 21300000, guid: 63fb1b142991c3144821fd1509dcd986, type: 3}
   doggoLeft: {fileID: 21300000, guid: f2e4dd2fc7e57d74d9657cdee2affdb3, type: 3}
   doggoDown: {fileID: 21300000, guid: f2cd0458af6d62b45aa57b59ac21f4a2, type: 3}
   doggoUp: {fileID: 21300000, guid: 3aa70c28cf8461d4695feeb80b2b5ed5, type: 3}
+  checkPrefab: {fileID: 1092752419216062, guid: 922a15ae2c98ec645946a7d23f641e0b,
+    type: 2}
   startingForward: 0
+  sidebar: {fileID: 0}
 --- !u!114 &114686774688968552
 MonoBehaviour:
   m_ObjectHideFlags: 1

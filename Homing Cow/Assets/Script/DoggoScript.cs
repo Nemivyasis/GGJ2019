@@ -14,7 +14,7 @@ public class DoggoScript : MonoBehaviour {
         up
     }
 
-    public float updateTime = .5f;
+    public float updateTime = .51f;
     float sinceLastUpdate;
     public bool running;
     private bool onTreat;
@@ -50,7 +50,17 @@ public class DoggoScript : MonoBehaviour {
                 Act();
             }
         }
-	}
+
+        if (Input.GetKeyDown("up"))
+        {
+            if (updateTime > 0.1f) updateTime -= 0.1f;
+        }
+
+        if (Input.GetKeyDown("down"))
+        {
+            if (updateTime < 1f) updateTime += 0.1f;
+        }
+    }
 
     private void SetAnimation()
     {
@@ -73,7 +83,11 @@ public class DoggoScript : MonoBehaviour {
         else
         {
             Vector3 forwardLoc = transform.position + GetDirection(forward);
-            if (onTreat) forwardLoc += GetDirection(forward);
+            if (onTreat)
+            {
+                if (forwardLoc.x > -8 && forwardLoc.x < 7 && forwardLoc.y > -12 && forwardLoc.y < 3) forwardLoc += GetDirection(forward);
+                else onTreat = false;
+            }
             GameObject whatsAhead = GetObjectAtLocation(forwardLoc);
             if (whatsAhead == null) Move();
             else if (whatsAhead.tag.Equals("Tree"))

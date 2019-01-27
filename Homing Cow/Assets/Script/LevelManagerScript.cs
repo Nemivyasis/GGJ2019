@@ -36,6 +36,7 @@ public class LevelManagerScript : MonoBehaviour {
         render = gameObject.GetComponent<SpriteRenderer>();
         doggo = GameObject.FindGameObjectWithTag("Dog");
         doggoScript = doggo.GetComponent<DoggoScript>();
+        render.enabled = false;
     }
 
     void Update()

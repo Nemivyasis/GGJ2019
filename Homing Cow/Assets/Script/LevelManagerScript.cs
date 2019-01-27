@@ -65,19 +65,19 @@ public class LevelManagerScript : MonoBehaviour {
                 transform.position = new Vector3(Mathf.Floor(mousePos.x + .5f), Mathf.Floor(mousePos.y + .5f), -5);
             }
 
-            if (Input.GetKeyDown("1"))
+            if (Input.GetKeyDown("1") && treeCount > 0)
             {
                 currentSelected = 1;
                 render.enabled = true;
                 render.sprite = treeSprite;
             }
-            if (Input.GetKeyDown("2"))
+            if (Input.GetKeyDown("2") && treatCount > 0)
             {
                 currentSelected = 2;
                 render.enabled = true;
                 render.sprite = treatSprite;
             }
-            if (Input.GetKeyDown("3"))
+            if (Input.GetKeyDown("3") && boulderCount > 0)
             {
                 currentSelected = 3;
                 render.enabled = true;
@@ -119,18 +119,27 @@ public class LevelManagerScript : MonoBehaviour {
                     }
                     else if (mousePos.y < -0.5)
                     {
-                        currentSelected = 3;
-                        render.sprite = boulderSprite;
+                        if (boulderCount > 0)
+                        {
+                            currentSelected = 3;
+                            render.sprite = boulderSprite;
+                        }
                     }
                     else if (mousePos.y < 1.5)
                     {
-                        currentSelected = 2;
-                        render.sprite = treatSprite;
+                        if (treatCount > 0)
+                        {
+                            currentSelected = 2;
+                            render.sprite = treatSprite;
+                        }
                     }
                     else if (mousePos.y < 3.5)
                     {
-                        currentSelected = 1;
-                        render.sprite = treeSprite;
+                        if (treeCount > 0)
+                        {
+                            currentSelected = 1;
+                            render.sprite = treeSprite;
+                        }
                     }
                 }
                 else

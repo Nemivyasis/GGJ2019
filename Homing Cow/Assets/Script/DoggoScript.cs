@@ -46,6 +46,10 @@ public class DoggoScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (MenuScript.beaten && Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("LevelSelect");
+        }
         if (!checkShowing)
         {
             if (running)
@@ -265,3 +269,4 @@ public class DoggoScript : MonoBehaviour {
         }
     }
 }
+

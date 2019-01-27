@@ -49,6 +49,7 @@ public class LevelManagerScript : MonoBehaviour {
 
     void Update()
     {
+        
         if (!doggoScript.running)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

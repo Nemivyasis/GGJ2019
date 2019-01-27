@@ -13,6 +13,7 @@ TagManager:
   - LevelManager
   - Tree
   - Goal
+  - Sidebar
   layers:
   - Default
   - TransparentFX

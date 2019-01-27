@@ -19,46 +19,64 @@ public class DoggoScript : MonoBehaviour {
     public bool running;
     private bool onTreat;
     private bool onGoal;
+    private bool checkShowing;
+    private float checkTime;
 
     public Sprite doggoRight;
     public Sprite doggoLeft;
     public Sprite doggoDown;
     public Sprite doggoUp;
 
+    public GameObject checkPrefab;
+
     public direction startingForward = direction.right;
     direction forward;
 
     Animator anim;
+
+    public SidebarScript sidebar;
 
 	// Use this for initialization
 	void Start () {
         sinceLastUpdate = 0;
         anim = gameObject.GetComponent<Animator>();
         SetAnimation();
+        sidebar = GameObject.FindGameObjectWithTag("Sidebar").GetComponent<SidebarScript>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (running)
+        if (!checkShowing)
         {
-            sinceLastUpdate += Time.deltaTime;
-
-            if (sinceLastUpdate >= updateTime)
+            if (running)
             {
-                sinceLastUpdate = 0;
+                sinceLastUpdate += Time.deltaTime;
 
-                Act();
+                if (sinceLastUpdate >= updateTime)
+                {
+                    sinceLastUpdate = 0;
+
+                    Act();
+                }
+            }
+
+            if (Input.GetKeyDown("up"))
+            {
+                if (updateTime > 0.1f) updateTime -= 0.1f;
+            }
+
+            if (Input.GetKeyDown("down"))
+            {
+                if (updateTime < 1f) updateTime += 0.1f;
             }
         }
-
-        if (Input.GetKeyDown("up"))
+        else
         {
-            if (updateTime > 0.1f) updateTime -= 0.1f;
-        }
-
-        if (Input.GetKeyDown("down"))
-        {
-            if (updateTime < 1f) updateTime += 0.1f;
+            checkTime -= Time.deltaTime;
+            if(checkTime < 0.0f)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
         }
     }
 
@@ -78,7 +96,10 @@ public class DoggoScript : MonoBehaviour {
     {
         if (onGoal)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            checkShowing = true;
+            checkTime = 3.0f;
+            GameObject c = Instantiate(checkPrefab);
+            c.transform.position = new Vector3(-0.5f, -4.5f, -1.0f);
         }
         else
         {
@@ -158,6 +179,7 @@ public class DoggoScript : MonoBehaviour {
         {
             transform.Translate(GetDirection(forward));
         }
+        transform.position = (new Vector3(transform.position.x, transform.position.y, transform.position.y * 0.01f));
     }
 
     public void ResetAll()
@@ -175,6 +197,7 @@ public class DoggoScript : MonoBehaviour {
         UpdateDirection();
         onTreat = false;
         running = false;
+        sidebar.setPlay();
     }
 
     public void UpdateDirection()

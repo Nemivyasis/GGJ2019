@@ -7,9 +7,9 @@ public class LevelManagerScript : MonoBehaviour {
     public int maxTrees;
     public int maxTreats;
     public int maxBoulders;
-    int treeCount;
-    int treatCount;
-    int boulderCount;
+    public int treeCount;
+    public int treatCount;
+    public int boulderCount;
 
     int currentSelected = 0;
 
@@ -28,11 +28,19 @@ public class LevelManagerScript : MonoBehaviour {
     GameObject doggo;
     DoggoScript doggoScript;
 
-    private void Start()
+    updateNumbersScript numScript;
+
+    private void Awake()
     {
         treeCount = maxTrees;
         treatCount = maxTreats;
         boulderCount = maxBoulders;
+
+    }
+    private void Start()
+    {
+        numScript = GameObject.FindGameObjectWithTag("Sidebar").GetComponent<updateNumbersScript>();
+
         render = gameObject.GetComponent<SpriteRenderer>();
         doggo = GameObject.FindGameObjectWithTag("Dog");
         doggoScript = doggo.GetComponent<DoggoScript>();
@@ -88,6 +96,7 @@ public class LevelManagerScript : MonoBehaviour {
                     if (mousePos.y < -9.5)
                     {
                         doggoScript.running = true;
+                        doggoScript.sidebar.setPause();
                         currentSelected = 0;
                         render.enabled = false;
                     }
@@ -145,6 +154,7 @@ public class LevelManagerScript : MonoBehaviour {
             if (Input.GetKeyDown("s"))
             {
                 doggoScript.running = true;
+                doggoScript.sidebar.setPause();
                 currentSelected = 0;
                 render.enabled = false;
             }
@@ -217,7 +227,8 @@ public class LevelManagerScript : MonoBehaviour {
                 render.enabled = false;
             }
         }
-        
+
+        numScript.updateCount();
     }
 
     void DeleteElement(Vector3 pos)
@@ -250,6 +261,8 @@ public class LevelManagerScript : MonoBehaviour {
             }
             if (found) placedObjects.Remove(g);
         }
+
+        numScript.updateCount();
     }
 
     void DeleteAll()
@@ -272,5 +285,6 @@ public class LevelManagerScript : MonoBehaviour {
         }
 
         placedObjects = new List<GameObject>();
+        numScript.updateCount();
     }
 }

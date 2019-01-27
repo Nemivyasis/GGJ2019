@@ -8,6 +8,13 @@ public class SortingScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        transform.Translate(new Vector3(0, 0, transform.position.y * 0.01f));
+        if (gameObject.tag.Equals("Pit"))
+        {
+            transform.Translate(new Vector3(0, 0, 0.15f));
+        }
+        else
+        {
+            transform.Translate(new Vector3(0, 0, transform.position.y * 0.01f));
+        }
     }
 }

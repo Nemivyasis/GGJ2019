@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114339299845931024}
   - component: {fileID: 114514223978246266}
   m_Layer: 0
-  m_Name: border
+  m_Name: Sidebar
   m_TagString: Sidebar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

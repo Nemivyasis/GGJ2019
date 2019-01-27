@@ -178,7 +178,7 @@ public class DoggoScript : MonoBehaviour {
         UpdateDirection();
         onTreat = false;
         running = false;
-        sidebar.setPause();
+        sidebar.setPlay();
     }
 
     public void UpdateDirection()

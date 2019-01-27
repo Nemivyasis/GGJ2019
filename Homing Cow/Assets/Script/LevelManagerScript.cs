@@ -36,6 +36,7 @@ public class LevelManagerScript : MonoBehaviour {
         render = gameObject.GetComponent<SpriteRenderer>();
         doggo = GameObject.FindGameObjectWithTag("Dog");
         doggoScript = doggo.GetComponent<DoggoScript>();
+        render.enabled = false;
     }
 
     void Update()
@@ -148,6 +149,27 @@ public class LevelManagerScript : MonoBehaviour {
                 render.enabled = false;
             }
 
+            if (Input.GetKeyDown("r"))
+            {
+                DeleteAll();
+            }
+
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                if(mousePos.x > 7.5 && mousePos.y < -9.5)
+                {
+                    doggoScript.ResetAll();
+                }
+            }
+
+            if (Input.GetKeyDown("s"))
+            {
+                doggoScript.ResetAll();
+            }
         }
     }
 

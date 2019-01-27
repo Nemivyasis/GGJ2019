@@ -14,10 +14,11 @@ public class DoggoScript : MonoBehaviour {
         up
     }
 
-    public float updateTime = .5f;
+    public float updateTime = .51f;
     float sinceLastUpdate;
     public bool running;
     private bool onTreat;
+    private bool onGoal;
 
     public Sprite doggoRight;
     public Sprite doggoLeft;
@@ -49,14 +50,17 @@ public class DoggoScript : MonoBehaviour {
                 Act();
             }
         }
-        else
+
+        if (Input.GetKeyDown("up"))
         {
-            if (Input.GetKeyDown("s"))
-            {
-                running = true;
-            }
+            if (updateTime > 0.1f) updateTime -= 0.1f;
         }
-	}
+
+        if (Input.GetKeyDown("down"))
+        {
+            if (updateTime < 1f) updateTime += 0.1f;
+        }
+    }
 
     private void SetAnimation()
     {
@@ -64,7 +68,7 @@ public class DoggoScript : MonoBehaviour {
     }
     private GameObject GetObjectAtLocation(Vector3 location)
     {
-        Collider[] colliders = Physics.OverlapSphere(location, 0.2f);
+        Collider[] colliders = Physics.OverlapSphere(location, 0.4f);
         if (colliders.Length == 0) return null;
         return colliders[0].gameObject;
 
@@ -72,48 +76,60 @@ public class DoggoScript : MonoBehaviour {
 
     private void Act()
     {
-        Vector3 forwardLoc = transform.position + GetDirection(forward);
-        if(onTreat) forwardLoc += GetDirection(forward);
-        GameObject whatsAhead = GetObjectAtLocation(forwardLoc);
-        if (whatsAhead == null) Move();
-        else if (whatsAhead.tag.Equals("Tree"))
+        if (onGoal)
         {
-            TurnRight();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        else if (whatsAhead.tag.Equals("Treat"))
+        else
         {
-            Move();
-            onTreat = true;
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
-            if (colliders.Length != 0)
+            Vector3 forwardLoc = transform.position + GetDirection(forward);
+            if (onTreat)
             {
-                GameObject treat = colliders[0].gameObject;
-                treat.GetComponent<TreatScript>().GetEaten();
+                if (forwardLoc.x > -8 && forwardLoc.x < 7 && forwardLoc.y > -12 && forwardLoc.y < 3) forwardLoc += GetDirection(forward);
+                else onTreat = false;
             }
-
-        }
-        else if (whatsAhead.tag.Equals("Pit"))
-        {
-            ResetAll();
-            running = false;
-        }
-        else if (whatsAhead.tag.Equals("Boulder"))
-        {
-            BoulderScript bs = whatsAhead.GetComponent<BoulderScript>();
-            if (bs.CanPush(GetDirection(forward)))
-            {
-                bs.Push(GetDirection(forward));
-                Move();
-            }
-            else
+            GameObject whatsAhead = GetObjectAtLocation(forwardLoc);
+            if (whatsAhead == null) Move();
+            else if (whatsAhead.tag.Equals("Tree"))
             {
                 TurnRight();
             }
-        }
+            else if (whatsAhead.tag.Equals("Treat"))
+            {
+                Move();
+                onTreat = true;
+                Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
+                if (colliders.Length != 0)
+                {
+                    GameObject treat = colliders[0].gameObject;
+                    treat.GetComponent<TreatScript>().GetEaten();
+                }
 
-        else if (whatsAhead.tag.Equals("Goal"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+            else if (whatsAhead.tag.Equals("Pit"))
+            {
+                ResetAll();
+                running = false;
+            }
+            else if (whatsAhead.tag.Equals("Boulder"))
+            {
+                BoulderScript bs = whatsAhead.GetComponent<BoulderScript>();
+                if (bs.CanPush(GetDirection(forward)))
+                {
+                    bs.Push(GetDirection(forward));
+                    Move();
+                }
+                else
+                {
+                    TurnRight();
+                }
+            }
+
+            else if (whatsAhead.tag.Equals("Goal"))
+            {
+                Move();
+                onGoal = true;
+            }
         }
     }
 
